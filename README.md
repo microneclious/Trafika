@@ -1,49 +1,131 @@
 # Trafika
 
-A desktop app for Linux that mocks up **two things side by side from the same photos**: an Instagram post
-(3:4 carousel, its own crops, borders and text) and a printed, numbered zine (folded sheet, its own page
-layout, borders, cover and back page). The two are linked but not the same: aspect ratios, page order,
-borders and text can differ on each side. Nothing is ever posted; it only writes files.
+Plan an Instagram post and a printed, numbered zine side by side, from the same photos.
 
-## Run it
+**[Open the web app](https://microneclious.github.io/Trafika/)** · **[Download for Linux (AppImage)](https://github.com/microneclious/Trafika/releases/latest)**
 
-Open a terminal and run:
+[![Web app](https://github.com/microneclious/Trafika/actions/workflows/pages.yml/badge.svg)](https://github.com/microneclious/Trafika/actions/workflows/pages.yml)
+[![Linux app](https://github.com/microneclious/Trafika/actions/workflows/release.yml/badge.svg)](https://github.com/microneclious/Trafika/actions/workflows/release.yml)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-FF4128)](LICENSE)
 
-    cd ~/projects/Zine/trafika
-    npm run tauri dev
+![Trafika's split view: the Instagram post on the left, the zine flipping open on the right](docs/images/hero-split.webp)
 
-The Trafika window opens. Leave the terminal open while you use it; closing the window (or Ctrl+C in the
-terminal) stops it. The first start compiles Rust and takes a few minutes; later starts are quick.
+<p align="center">
+  <img src="docs/images/flip.gif" width="49%" alt="Flipping through the zine page by page">
+  <img src="docs/images/fold.gif" width="49%" alt="Step-by-step folding instructions for the sheet">
+</p>
 
-Your work is saved automatically in `~/Zines/`:
+## Why
 
-    ~/Zines/collection.json          the ledger
-    ~/Zines/012-tranzit/issue.json   one issue
-    ~/Zines/012-tranzit/assets/      full-res copies of your photos (originals untouched)
-    ~/Zines/012-tranzit/exports/ig/      IG JPEGs + caption.txt
-    ~/Zines/012-tranzit/exports/print/   print PDFs, test prints
-    ~/Zines/fonts/                   fonts you added
+I post photos on Instagram and I print them as small zines, and the two never fit the same way: different aspect ratios, different crops, different layouts. Trafika plans both from the same photos, so every post becomes a numbered physical zine.
 
-## Making a standalone app
+## What it does
 
-    npm run tauri build
+| | |
+|---|---|
+| ![Cover editor](docs/images/cover.webp) | **Split view and per-side borders.** The post and the zine sit side by side. Borders, crops and layouts can match or differ: post full-bleed and print with a mat, or the other way round.<br><br>**Covers.** Twelve title layouts, any font (Latin and Cyrillic), layout grids with snapping, an optional wraparound photo across the back and front. |
+| ![Back page with note and barcode](docs/images/back.webp) | **Back page.** A note, place and song, your own fields, a QR code that opens whatever you put in it, all draggable and recolourable. |
+| ![Print sheet layout](docs/images/sheet.webp) | **Flip, sheet and fold views.** Flip through the booklet as it will read, see the exact print sheet with cut and fold lines, then follow numbered folding steps. |
+| ![Instagram profile grid](docs/images/profile.webp) | **Profile grid.** Every issue as a post in a mock profile, cropped the way Instagram's grid crops it. |
+| ![The collection ledger](docs/images/ledger.webp) | **Serials and barcodes.** Every printed copy gets its own serial (`03/05`) and EAN-13 + 2 barcode. Scan one into the ledger search to jump to its issue and copy. |
 
-builds an optimised AppImage in `src-tauri/target/release/bundle/appimage/`.
+**Exports:** Instagram slides as sRGB JPEGs with no camera or GPS data, plus the caption; print PDFs at 300 DPI with optional guides; a numbered test print to check your folding.
 
-## First-time setup (Manjaro / Arch), already done on this machine
+## The 3:4 trim trick
 
-    sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool rustup
-    rustup default stable
-    npm install
+![A4 trimmed to 297 × 198 mm gives 3:4 pages and 3:2 spreads](docs/images/trim-trick.svg)
 
-## Tests
+Trim 6 mm off the top and bottom of an A4 sheet and every page of the classic 8-page mini zine comes out exactly 3:4, the shape of a portrait Instagram slide. Two pages side by side make a 3:2 spread: a two-slide carousel, and the shape of a 35 mm camera frame. So the same photo fits the post, the page and the camera without a second crop.
 
-    npm test        # layout maths, page order, crops, barcode numbers, decodes the generated barcodes
+## Templates
 
-## Layout
+| Template | Pages | Paper | How it's made |
+|---|---|---|---|
+| **T1** 8-page mini, one cut<br>![T1 sheet](docs/images/fold-t1.svg) | 8 | A4, A3, Letter; one side | One sheet, one cut, folded. The classic. |
+| **T2** 8-page mini + poster<br>![T2 sheet](docs/images/fold-t2.svg) | 8 + poster | A4, A3, Letter; both sides (short edge) | T1 with a full-sheet poster on the back, hidden in the folds. |
+| **T4** Stapled booklet<br>![T4 sheet](docs/images/fold-t4.svg) | 8–24 | A4 (A5 pages), A3, Letter; both sides | Sheets folded, nested and stapled through the fold. |
+| **T6** French fold<br>![T6 sheet](docs/images/fold-t6.svg) | 4 | A4, A3, Letter; one side | Folded twice so the back of the print never shows. Good on thin paper and inkjet. |
+| **T7** Accordion + glue tab<br>![T7 sheet](docs/images/fold-t7.svg) | 8 | A4, A3, Letter; one side | Two strips glued into one zig-zag. Made for panoramas. |
+| **T8** Tri-fold pamphlet<br>![T8 sheet](docs/images/fold-t8.svg) | 6 | A4, Letter; both sides (short edge) | Two folds, six tall panels. |
 
-- `src/engine/`: the one layout engine (mm). Templates are JSON (`templates/t1.json`).
-- `src/render/`: the one Canvas2D renderer used for previews, IG JPEGs and print rasters.
-- `src/export/`: IG JPEGs, print PDF (pdf-lib), calibration page.
-- `src/ui/`: screens. `src-tauri/`: Rust side (files, photo import + hashing, fonts via fontconfig, `lp`).
-- `design/`: the original static mocks.
+Red lines are cuts, dashed lines are folds, the grey strips are trimmed off. Numbers upside down are printed upside down on purpose: they come out the right way up once folded. 100–120 gsm paper folds cleanly; for double-sided templates, print a numbered test first and calibrate your printer (Printer, in the app).
+
+## Privacy
+
+- **Offline.** The web app is cached on your device after the first visit and makes no network requests after that: no analytics, no fonts or scripts from other sites. A strict Content-Security-Policy enforces it, and the build fails if any external host shows up in the code.
+- **No uploads.** Photos stay on your computer: in `~/Zines` in the Linux app, in the browser's private storage in the web app.
+- **Nothing is posted for you.** No Instagram or Meta connection, no accounts. You export the slides and post them yourself.
+- **Back up.** Browsers can clear their storage, so the web app reminds you to export a `.zip` backup. The same `.zip` opens in the Linux app and the web app.
+
+## Linux app or web app?
+
+| | Linux app (AppImage) | Web app |
+|---|---|---|
+| Install | Download, `chmod +x`, run | Nothing, open the link |
+| Your files | `~/Zines`, plain folders | Browser storage, `.zip` backups |
+| Fonts | Your installed fonts + any you add | Bundled + any you add |
+| Printing | Straight to your printer (duplex aware) | Download the PDF, print at 100 % |
+
+The AppImage runs on Fedora, Manjaro/Arch, Ubuntu, Debian and most other distros. If it doesn't start, install FUSE 2 (`sudo dnf install fuse fuse-libs` on Fedora, `sudo pacman -S fuse2` on Manjaro). If the window stays blank on NVIDIA or some Wayland setups, start it with `WEBKIT_DISABLE_DMABUF_RENDERER=1`.
+
+## Run it from source
+
+You need Node.js 20+ (24 recommended).
+
+```sh
+npm ci
+npm run dev        # web app at http://localhost:1420
+npm test           # engine, zip, hashing and template tests
+npm run build      # web build in dist/, then: npm run check:offline
+```
+
+For the Linux app you also need Rust ([rustup](https://rustup.rs)) and the WebKitGTK libraries:
+
+```sh
+# Fedora
+sudo dnf install webkit2gtk4.1-devel openssl-devel curl wget file libappindicator-gtk3-devel librsvg2-devel
+sudo dnf group install c-development
+# Manjaro / Arch
+sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl libappindicator-gtk3 librsvg
+# Ubuntu / Debian
+sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libayatana-appindicator3-dev librsvg2-dev
+
+npm run tauri dev                            # run the Linux app
+npm run tauri build -- --bundles appimage    # build the AppImage
+./scripts/install-desktop.sh                 # add a source build to your app menu
+```
+
+Pushing a tag like `v1.0.1` builds the AppImage on GitHub and attaches it to a release.
+
+### Project structure
+
+```
+src/
+  engine/      layout in mm, imposition templates (JSON), barcodes, grids: no UI, fully tested
+  render/      one Canvas2D renderer for screen, JPEG and PDF; fonts; image cache
+  export/      Instagram JPEGs, print PDFs, calibration page
+  platform/    the only code that touches files: tauri.ts (Linux app), web.ts (browser),
+               backup.ts (.zip format shared by both)
+  store/       app state, undo/redo, autosave
+  ui/          React components
+src-tauri/     the Linux app shell (Rust): ~/Zines files, fonts via fontconfig, printing via lp
+docs/          spec, user guide, demo photos and README images
+scripts/       offline check, icon, desktop launcher
+```
+
+## Documentation
+
+- [User guide](docs/USER_GUIDE.md): your first issue, printer calibration, trimming and folding
+- [Changelog](CHANGELOG.md)
+- [Spec](docs/ZINE_SPEC.md)
+
+## Credits
+
+- Inspired by the one-sheet zine tradition, and by [dirtylittlezine.com](https://dirtylittlezine.com) among many others.
+- Fonts: [IBM Plex Sans and IBM Plex Mono](https://github.com/IBM/plex) and [Oswald](https://github.com/googlefonts/OswaldFont), under the SIL Open Font License 1.1 (licence texts in [`public/licenses/`](public/licenses)).
+- Built with Tauri, React, pdf-lib, bwip-js and zustand.
+- The demo photos in the screenshots come from Wikimedia Commons, under CC BY / CC BY-SA / CC0. The photographers and licences are in [`docs/demo-photos/CREDITS.md`](docs/demo-photos/CREDITS.md). The screenshots that show those photos share their licences.
+
+## Licence
+
+Code: [MIT](LICENSE). Bundled fonts keep their OFL licence. Demo photos keep their own licences.
