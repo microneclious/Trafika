@@ -1,7 +1,6 @@
-import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { useEffect, useState } from "react";
 import { autoFlow, impOf, pageChecks, slidesOf } from "./engine/layout";
-import { inTauri } from "./lib/backend";
+import { platform } from "./platform";
 import { type Tool, useStore, type View } from "./store/store";
 import { Collection } from "./ui/Collection";
 import { ExportDialog, FontsDialog, SettingsDialog } from "./ui/Dialogs";
@@ -29,21 +28,17 @@ export default function App() {
   const [dropping, setDropping] = useState(false);
 
   useEffect(() => {
-    if (!inTauri()) { setError("Trafika needs its desktop shell. Start it from the app menu, or: npm run tauri dev"); return; }
     s.init().catch((e) => setError(String(e)));
-    let un: (() => void) | undefined;
-    getCurrentWebview().onDragDropEvent((e) => {
-      const p = e.payload;
-      if (p.type === "enter" || p.type === "over") setDropping(true);
-      else if (p.type === "leave") setDropping(false);
-      else if (p.type === "drop") {
+    return platform.onDrop((e) => {
+      if (e.type === "over") setDropping(true);
+      else if (e.type === "leave") setDropping(false);
+      else {
         setDropping(false);
         const st = useStore.getState();
-        if (!st.issue) { st.notify("Open or create an issue first, then drop photos on it."); return; }
-        void st.addPhotos(p.paths);
+        if (!st.issue || st.view === "collection") { st.notify("Open or create an issue first, then drop photos on it."); return; }
+        void st.addPhotos(e.sources);
       }
-    }).then((f) => { un = f; }).catch(() => {});
-    return () => un?.();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -148,7 +143,7 @@ export default function App() {
 function StatusBar() {
   const { issue, saving, root, active, cams, tool, view } = useStore();
   const lk = useLayerKey();
-  if (!issue || view === "collection") return <footer className="status"><span>{root}</span><span className="spacer" /><span>Offline. Nothing is ever posted.</span></footer>;
+  if (!issue || view === "collection") return <footer className="status"><span>{root}</span><StorageNote /><span className="spacer" /><span>Offline. Nothing is ever posted.</span></footer>;
   const imp = impOf(issue);
   const slides = slidesOf(issue).length;
   const warn = autoFlow(issue, imp).warnings.length + pageChecks(issue).reduce((n, c) => n + c.warnings.length, 0);
@@ -159,8 +154,25 @@ function StatusBar() {
       <span>{active === "feed" ? "Instagram" : "Zine"} {Math.round(cams[active].zoom * 100)}%</span>
       <span>{tool === "move" ? lk.label : tool}</span>
       <span className="spacer" />
+      <StorageNote />
       {warn > 0 && <span className="warn">{warn} warning{warn > 1 ? "s" : ""} (TPL)</span>}
       <span>{saving === "saved" ? "Saved" : saving === "saving" ? "Saving…" : "Save failed"}</span>
     </footer>
+  );
+}
+
+/** Web only: is browser storage protected, and when was the last backup? Quiet, one line. */
+function StorageNote() {
+  const { persisted, settings, collection, askPersist, backup } = useStore();
+  if (!platform.caps.volatile) return null;
+  const days = settings.lastBackup ? Math.floor((Date.now() - Date.parse(settings.lastBackup)) / 86_400_000) : null;
+  const stale = collection.length > 0 && (days === null || days > 14);
+  return (
+    <>
+      {persisted
+        ? <span title="The browser won't clear Trafika's storage on its own">Storage kept</span>
+        : <button type="button" className="status-btn" onClick={() => void askPersist()} title="Ask the browser not to clear Trafika's storage when space runs low">Storage may be cleared: keep it</button>}
+      {stale && <button type="button" className="status-btn warn" onClick={() => void backup("collection")}>{days === null ? "No backup yet" : `Last backup ${days} days ago`}: back up now</button>}
+    </>
   );
 }

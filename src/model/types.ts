@@ -193,4 +193,6 @@ export interface Settings {
   duplexOffset: { x: number; y: number };
   printLift: number;
   printer: string;
+  /** ISO date of the last .zip backup (for the reminder in the web version) */
+  lastBackup?: string;
 }

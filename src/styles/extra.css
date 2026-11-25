@@ -242,3 +242,11 @@ canvas.picking, .tool-picker canvas { cursor: crosshair; }
 .coll-empty { padding: var(--space-xl) var(--space-lg); display: grid; gap: var(--space-md); max-width: 560px; color: var(--color-ink-2); }
 .coll-empty h2 { color: var(--color-ink); font-size: var(--text-xl); font-weight: 500; }
 .phone .post-media { outline: none; aspect-ratio: auto; }
+
+/* web build: collection actions + storage note */
+.coll-head { flex-wrap: wrap; }
+.coll-actions { gap: var(--space-xs); }
+.status-btn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--color-ink-2); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-rule-2); }
+.status-btn:hover { color: var(--color-ink); }
+.status-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.status-btn.warn { color: var(--color-warn); }

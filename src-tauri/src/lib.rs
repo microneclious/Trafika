@@ -111,6 +111,43 @@ fn list_dir(rel: String) -> R<Vec<String>> {
     Ok(v)
 }
 
+/// Every file under `rel` (recursive), as paths relative to ~/Zines. Skips half-written temp files.
+#[tauri::command]
+fn list_tree(rel: String) -> R<Vec<String>> {
+    let base = root()?;
+    let start = safe(&rel)?;
+    let mut out = vec![];
+    let mut stack = vec![start];
+    while let Some(dir) = stack.pop() {
+        if !dir.is_dir() {
+            continue;
+        }
+        for e in fs::read_dir(&dir).map_err(err)?.flatten() {
+            let p = e.path();
+            let ft = e.file_type().map_err(err)?;
+            if ft.is_symlink() {
+                continue;
+            }
+            if ft.is_dir() {
+                stack.push(p);
+            } else if !p.to_string_lossy().ends_with(".tmp~") {
+                if let Ok(r) = p.strip_prefix(&base) {
+                    out.push(r.to_string_lossy().replace('\\', "/"));
+                }
+            }
+        }
+    }
+    out.sort();
+    Ok(out)
+}
+
+/// Read a file the user picked in a file dialog (e.g. a backup .zip).
+#[tauri::command]
+fn read_external(path: String) -> R<tauri::ipc::Response> {
+    let data = fs::read(&path).map_err(|e| format!("{path}: {e}"))?;
+    Ok(tauri::ipc::Response::new(data))
+}
+
 #[derive(Serialize)]
 struct Imported {
     file: String,
@@ -305,6 +342,8 @@ pub fn run() {
             read_bytes,
             write_bytes,
             list_dir,
+            list_tree,
+            read_external,
             import_photos,
             import_font,
             list_imported_fonts,
@@ -316,4 +355,26 @@ pub fn run() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running Trafika");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn tree_lists_nested_files_and_refuses_escape() {
+        let home = std::env::temp_dir().join(format!("trafika-test-{}", std::process::id()));
+        fs::create_dir_all(&home).unwrap();
+        // single test in this binary, so changing HOME cannot race another test
+        unsafe { std::env::set_var("HOME", &home) };
+        write_atomic(&safe("012-x/issue.json").unwrap(), b"{}").unwrap();
+        write_atomic(&safe("012-x/assets/ab.jpg").unwrap(), b"jpg").unwrap();
+        fs::write(safe("012-x/half.tmp~").unwrap(), b"x").unwrap();
+        assert_eq!(list_tree("012-x".into()).unwrap(), vec!["012-x/assets/ab.jpg", "012-x/issue.json"]);
+        assert!(list_tree("".into()).unwrap().contains(&"012-x/issue.json".to_string()));
+        assert!(list_tree("../".into()).is_err());
+        assert!(safe("/etc/passwd").is_err());
+        assert!(list_tree("missing".into()).unwrap().is_empty());
+        fs::remove_dir_all(&home).unwrap();
+    }
 }

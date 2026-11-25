@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fontMissing } from "../lib/backend";
+import { platform } from "../platform";
+import { missingGlyphs } from "../platform/glyphs";
 import type { Border, BorderPreset } from "../model/types";
 import { useStore } from "../store/store";
 
@@ -106,7 +107,7 @@ export function FontSelect({ value, onChange, label = "Font", text = "" }: { val
     let alive = true;
     const t = window.setTimeout(async () => {
       if (!text.trim() || !cur) { setMissing([]); return; }
-      const m = cur.source === "system" ? await fontMissing(value, text).catch(() => []) : missingInFaces(value, text);
+      const m = cur.source === "system" ? await platform.fontMissing(value, text).catch(() => []) : cur.source === "imported" ? missingGlyphs(value, text) : missingInFaces(value, text);
       if (alive) setMissing(m);
     }, 250);
     return () => { alive = false; window.clearTimeout(t); };

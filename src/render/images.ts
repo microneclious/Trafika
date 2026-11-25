@@ -1,5 +1,5 @@
 // Photo bitmaps: a preview copy (max 2048 px) for the screen, full resolution on demand for export.
-import { readBytes } from "../lib/backend";
+import { platform } from "../platform";
 import type { Asset } from "../model/types";
 import type { ImageProvider } from "./renderer";
 
@@ -13,7 +13,7 @@ export function onImagesChanged(fn: () => void) { listeners.add(fn); return () =
 const notify = () => listeners.forEach((f) => f());
 
 async function blobOf(a: Asset) {
-  const bytes = await readBytes(a.file);
+  const bytes = await platform.readBytes(a.file);
   return new Blob([bytes as BlobPart]);
 }
 

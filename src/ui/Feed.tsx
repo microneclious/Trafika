@@ -1,7 +1,6 @@
-import { open } from "@tauri-apps/plugin-dialog";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { RATIOS, type RI, feedSize, slideItems, slidesOf } from "../engine/layout";
-import { importPhotos, readBytes } from "../lib/backend";
+import { platform } from "../platform";
 import type { Border, FeedRatio, Issue } from "../model/types";
 import { useStore } from "../store/store";
 import { BorderPicker } from "./controls";
@@ -62,7 +61,7 @@ function useBlobUrl(rel: string | null) {
   useEffect(() => {
     if (!rel) { setUrl(null); return; }
     let u: string | null = null, alive = true;
-    readBytes(rel).then((b) => { if (!alive) return; u = URL.createObjectURL(new Blob([b as BlobPart])); setUrl(u); }).catch(() => setUrl(null));
+    platform.readBytes(rel).then((b) => { if (!alive) return; u = URL.createObjectURL(new Blob([b as BlobPart])); setUrl(u); }).catch(() => setUrl(null));
     return () => { alive = false; if (u) URL.revokeObjectURL(u); };
   }, [rel]);
   return url;
@@ -228,9 +227,9 @@ function ProfileForm({ onClose }: { onClose: () => void }) {
       </div>
       <div className="row">
         <button type="button" className="btn" onClick={async () => {
-          const r = await open({ multiple: false, title: "Profile picture", filters: [{ name: "Photos", extensions: ["jpg", "jpeg", "png", "webp"] }] });
-          if (!r || Array.isArray(r)) return;
-          try { const [im] = await importPhotos("profile", [r]); setP({ ...p, avatar: im.file }); } catch (e) { notify(String(e)); }
+          const [r] = await platform.pick("photo");
+          if (!r) return;
+          try { const [im] = await platform.importPhotos("profile", [r]); setP({ ...p, avatar: im.file }); } catch (e) { notify(String(e)); }
         }}>Choose profile picture…</button>
         {p.avatar && <button type="button" className="btn" onClick={() => setP({ ...p, avatar: null })}>Remove</button>}
       </div>
