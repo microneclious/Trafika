@@ -1,0 +1,17 @@
+{
+  "id": "saddle", "code": "T4", "name": "Stapled booklet (saddle stitch)",
+  "blurb": "Sheets folded in half, nested, stapled through the fold. 8 to 24 pages, A5 on A4. Only the centre spread is on one sheet: split pairs elsewhere can drift.",
+  "binding": "codex", "orientation": "landscape", "sizes": ["A4", "A3", "Letter"], "trimRatio": 1.5,
+  "sides": 2, "duplex": "short", "generator": "saddle", "pages": [8, 12, 16, 20, 24],
+  "lines": [{ "id": "spine", "kind": "fold", "axis": "x", "at": 0.5 }],
+  "glue": [],
+  "steps": [
+    { "text": "Print both sides, flip on SHORT edge, scaling off. One sheet per 4 pages.", "show": [] },
+    { "text": "If trimmed: cut each sheet at the top and bottom trim marks.", "show": [] },
+    { "text": "Fold every sheet in half along the centre, printed page numbers outward, crease hard.", "show": ["spine"] },
+    { "text": "Nest the folded sheets inside each other in order: sheet 1 outside, the last sheet in the middle.", "show": ["spine"] },
+    { "text": "Staple twice through the fold from the outside (long-arm stapler), or sew a 3-hole pamphlet stitch with thread.", "show": ["spine"] },
+    { "text": "Optional: trim the open edge straight; inner pages stick out a little on thicker booklets.", "show": [] }
+  ],
+  "verified": false
+}

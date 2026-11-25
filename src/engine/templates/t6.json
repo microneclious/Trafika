@@ -1,0 +1,21 @@
+{
+  "id": "french-fold", "code": "T6", "name": "French fold, 4 pages",
+  "blurb": "One side printed, folded twice; folded edges at the top and spine, so the back of the print never shows. Good on thin paper and inkjet.",
+  "binding": "codex", "orientation": "portrait", "sizes": ["A4", "A3", "Letter"], "trimRatio": 0.75,
+  "sides": 1, "grid": { "cols": 2, "rows": 2 }, "pages": [4],
+  "panels": [
+    { "page": 3, "side": 0, "col": 0, "row": 0, "rot": 180 }, { "page": 2, "side": 0, "col": 1, "row": 0, "rot": 180 },
+    { "page": 4, "side": 0, "col": 0, "row": 1, "rot": 0 }, { "page": 1, "side": 0, "col": 1, "row": 1, "rot": 0 }
+  ],
+  "spreads": [[2, 3, "contiguous"], [4, 1, "wrap-cover"]],
+  "lines": [{ "id": "h", "kind": "fold", "axis": "y", "at": 0.5 }, { "id": "v", "kind": "fold", "axis": "x", "at": 0.5 }],
+  "glue": [],
+  "steps": [
+    { "text": "Print on one side (portrait), scaling off. If trimmed: cut at the two trim marks.", "show": [] },
+    { "text": "Fold the top half back behind the bottom half, print outside. Crease.", "show": ["h"] },
+    { "text": "Fold the left half back behind the right half. That folded edge is the spine.", "show": ["v"] },
+    { "text": "Front cover on top. The pages open at the bottom and right edges; leave them uncut.", "show": [] },
+    { "text": "Optional: make several and stack them, then staple or tape along the spine for a thicker zine.", "show": ["v"] }
+  ],
+  "verified": false
+}
