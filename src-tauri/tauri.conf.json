@@ -35,7 +35,7 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "category": "Graphics",
+    "category": "GraphicsAndDesign",
     "shortDescription": "Mock up an Instagram post and a printed zine side by side",
     "longDescription": "Trafika plans one Instagram post and one printed, numbered zine from the same photos: per-side borders, covers, imposition templates, serials and barcodes. Works offline; nothing is ever posted.",
     "license": "MIT",
