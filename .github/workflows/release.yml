@@ -1,0 +1,58 @@
+# Builds the Linux app as an AppImage, one file that runs on Fedora, Manjaro, Ubuntu, Debian, etc.
+# Built on Ubuntu 22.04 on purpose: an AppImage runs on distros with the same or newer system
+# libraries, so an older build base means it works on more machines.
+#
+#   Manual run (Actions tab → "Linux app" → Run workflow): the AppImage is attached to the run.
+#   Push a tag like v1.0.0:  the AppImage is published as a GitHub Release.
+name: Linux app (AppImage)
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  appimage:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write # create the release on tags
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca # stable
+      - uses: swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: src-tauri
+      - name: System libraries for Tauri
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf libssl-dev build-essential file
+      - run: npm ci
+      - run: npm test
+      - name: Build AppImage
+        run: npm run tauri build -- --bundles appimage
+      - name: Collect
+        id: out
+        run: |
+          f=$(ls src-tauri/target/release/bundle/appimage/*.AppImage | head -1)
+          sha256sum "$f" > "$f.sha256"
+          echo "file=$f" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: Trafika-AppImage
+          path: |
+            ${{ steps.out.outputs.file }}
+            ${{ steps.out.outputs.file }}.sha256
+      - uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: |
+            ${{ steps.out.outputs.file }}
+            ${{ steps.out.outputs.file }}.sha256
+          generate_release_notes: true
