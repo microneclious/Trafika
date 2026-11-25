@@ -107,7 +107,7 @@ export function ExportDialog({ onClose }: { onClose: () => void }) {
 export function FontsDialog({ onClose }: { onClose: () => void }) {
   const { fonts, reloadFonts, notify } = useStore();
   const [filter, setFilter] = useState("");
-  const [sample, setSample] = useState("Fixer Транзит ЃЌЅЉЊЏЈ 012");
+  const [sample, setSample] = useState("Trafika Трафика ЃЌЅЉЊЏЈ 012");
   const add = async () => {
     const r = await open({ multiple: true, title: "Add font files", filters: [{ name: "Fonts", extensions: ["ttf", "otf", "woff", "woff2"] }] });
     if (!r) return;

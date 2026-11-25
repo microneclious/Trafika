@@ -1,4 +1,4 @@
-# Fixer — Instagram + Zine Planner (Spec v2)
+# Trafika — Instagram + Zine Planner (Spec v2)
 
 Personal Linux desktop app (Fedora KDE). One **Issue** = one Instagram post (single or carousel) = one printed, numbered, serialized zine that goes into a physical collection.
 
@@ -182,7 +182,7 @@ Every template is a JSON data file (§7). Each one ships with a **numbered test 
 - **Barcode:** magazine-style **EAN-13 + 2-digit add-on**, like the ones on newsstand magazines.
   - Real magazines use ISSN-based 977 codes. Don't use those. Use the GS1 **040–049 range, which is reserved for company-internal numbers**, so it can never clash with a real product.
   - Number layout: `049` + `YY` + `IIII` (issue) + `CCC` (copy) + check digit = 13 digits. Add-on = issue no. last 2 digits (that's what magazines use it for).
-  - Human-readable line under it: `FIXER // No. 012 // 23.11.2026 // 03/05`.
+  - Human-readable line under it: `TRAFIKA // No. 012 // 23.11.2026 // 03/05`.
   - Printed pure black on white, never through effects, at ≥ 80% nominal size (~30 mm wide + add-on). Test that a phone scanner reads it.
 - **Print log:** every print run is recorded (date, copies, serials, template, paper). Reprints continue the serial count.
 

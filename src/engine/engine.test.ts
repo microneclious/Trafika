@@ -172,8 +172,8 @@ describe("layers + grids", () => {
   });
   it("bound text follows the issue (serial changes per copy)", () => {
     const i = newIssue(12); i.date = "23.11.2026";
-    const human = (copy: number) => layerItems({ issue: i, side: "zine", copy, total: 5 }, i.layers["zine:back"], 74.25, 99).find((x) => x.t === "text" && x.text.startsWith("FIXER"));
-    expect(human(3)).toMatchObject({ text: "FIXER // No. 012 // 23.11.2026 // 03/05" });
+    const human = (copy: number) => layerItems({ issue: i, side: "zine", copy, total: 5 }, i.layers["zine:back"], 74.25, 99).find((x) => x.t === "text" && x.text.startsWith("TRAFIKA"));
+    expect(human(3)).toMatchObject({ text: "TRAFIKA // No. 012 // 23.11.2026 // 03/05" });
   });
   it("migrates a v1 issue: cover title, back page, free text", () => {
     const v1 = { version: 1, id: "x", no: 3, slug: "003-x", title: "t", date: "1.1.2026", handle: "@me", caption: "c", assets: [], items: [],

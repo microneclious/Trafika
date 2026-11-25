@@ -1,4 +1,4 @@
-# Fixer
+# Trafika
 
 A desktop app for Linux that mocks up **two things side by side from the same photos**: an Instagram post
 (3:4 carousel, its own crops, borders and text) and a printed, numbered zine (folded sheet, its own page
@@ -9,10 +9,10 @@ borders and text can differ on each side. Nothing is ever posted; it only writes
 
 Open a terminal and run:
 
-    cd ~/projects/Zine/fixer
+    cd ~/projects/Zine/trafika
     npm run tauri dev
 
-The Fixer window opens. Leave the terminal open while you use it; closing the window (or Ctrl+C in the
+The Trafika window opens. Leave the terminal open while you use it; closing the window (or Ctrl+C in the
 terminal) stops it. The first start compiles Rust and takes a few minutes; later starts are quick.
 
 Your work is saved automatically in `~/Zines/`:

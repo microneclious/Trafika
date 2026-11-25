@@ -1,15 +1,15 @@
-# Claude Code kickoff: Fixer v2 (IG + zine planner)
+# Claude Code kickoff: Trafika v2 (IG + zine planner)
 
 ## Setup (do this yourself first)
 
-1. Make the repo in your git folder: `mkdir fixer && cd fixer && git init && mkdir docs`
+1. Make the repo in your git folder: `mkdir trafika && cd trafika && git init && mkdir docs`
 2. Put `ZINE_SPEC.md` in `docs/`.
 3. Check hallmark is installed: `npx skills list -g`. If it's missing: `npx skills add nutlope/hallmark -g --agent claude-code`, then restart Claude Code.
 4. Start `claude` in the repo and paste everything below the line.
 
 ---
 
-You're building **Fixer**, a personal Linux desktop app (Fedora KDE) for planning a photography Instagram post and turning it into a printed, numbered, serialized zine. One "Issue" = one IG post (single or carousel) = one physical zine in my collection. The full spec is `docs/ZINE_SPEC.md`. Read all of it before writing any code. It's the source of truth. If something in it is wrong or impossible, say so and propose a fix. Don't silently deviate.
+You're building **Trafika**, a personal Linux desktop app (Fedora KDE) for planning a photography Instagram post and turning it into a printed, numbered, serialized zine. One "Issue" = one IG post (single or carousel) = one physical zine in my collection. The full spec is `docs/ZINE_SPEC.md`. Read all of it before writing any code. It's the source of truth. If something in it is wrong or impossible, say so and propose a fix. Don't silently deviate.
 
 ## Non-negotiables
 
@@ -34,7 +34,7 @@ Tauri 2 + Vite + React + TypeScript, zustand, pdf-lib, bwip-js (EAN-13+2 and QR)
 Use the **hallmark** skill for all UI design and checks. hallmark works on HTML/CSS, which this UI is.
 
 Direction: mix my two references.
-- **pilotlight.download**: fetch it and look for yourself. What I saw: near-black base with a green cast (`#000B04`), a console/case-file feel, a data table as the hero, uppercase mono micro-labels, `//` separators in eyebrows ("Fixer // issue 012"), three-letter section codes (CRP, BRD, TXT, CVR, BCK, TPL, SER), a status footer line, a blinking live indicator. Use those motifs. Don't copy its text, illustrations or layout wholesale.
+- **pilotlight.download**: fetch it and look for yourself. What I saw: near-black base with a green cast (`#000B04`), a console/case-file feel, a data table as the hero, uppercase mono micro-labels, `//` separators in eyebrows ("Trafika // issue 012"), three-letter section codes (CRP, BRD, TXT, CVR, BCK, TPL, SER), a status footer line, a blinking live indicator. Use those motifs. Don't copy its text, illustrations or layout wholesale.
 - **dirtylittlezine.com**: black-and-white film-photo feel, informal DIY tone in the copy.
 - Photos and paper must look true. Everything representing print sits on paper-white; chrome stays dark and quiet. One accent colour: give me two options in M0 (safelight red vs phosphor green) and I'll pick.
 - The **Collection view** is where the pilotlight "case file" table fits best: the ledger of issues, serials and print runs.

@@ -70,7 +70,7 @@ export function codesFor(issue: Issue, copy: number, total: number): CodeSet {
   let addon: string | null = null;
   if (ean && c.addon === "issue") addon = String(issue.no % 100).padStart(2, "0");
   else if (ean && c.addon === "custom" && /^\d{2}$/.test(c.addonCustom)) addon = c.addonCustom;
-  const human = ["FIXER", `No. ${pad3(issue.no)}`, issue.date, `${String(copy).padStart(2, "0")}/${String(total).padStart(2, "0")}`]
+  const human = ["TRAFIKA", `No. ${pad3(issue.no)}`, issue.date, `${String(copy).padStart(2, "0")}/${String(total).padStart(2, "0")}`]
     .filter(Boolean).join(" // ");
   return {
     ean, addon,

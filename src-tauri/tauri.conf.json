@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Fixer",
+  "productName": "Trafika",
   "version": "0.1.0",
-  "identifier": "dev.fixer.app",
+  "identifier": "io.github.microneclious.trafika",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Fixer",
+        "title": "Trafika",
         "width": 1600,
         "height": 960,
         "minWidth": 1200,

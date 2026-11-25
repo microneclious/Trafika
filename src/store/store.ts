@@ -105,7 +105,7 @@ export const useStore = create<State>((set, get) => ({
     set({ root, collection, settings, profile });
     const fonts = await loadAllFonts();
     set({ fonts, ready: true });
-    const last = localStorage.getItem("fixer:last");
+    const last = localStorage.getItem("trafika:last");
     if (last && collection.some((c) => c.slug === last)) await get().openIssue(last);
     void get().loadOthers();
   },
@@ -154,7 +154,7 @@ export const useStore = create<State>((set, get) => ({
     const no = Math.max(0, ...get().collection.map((c) => c.no)) + 1;
     const i = newIssue(no);
     set({ issue: i, past: [], future: [], slide: 0, page: 1, view: "issue", zineView: "flip", sel: null });
-    localStorage.setItem("fixer:last", i.slug);
+    localStorage.setItem("trafika:last", i.slug);
     await get().saveNow();
     void get().loadOthers();
   },
@@ -166,7 +166,7 @@ export const useStore = create<State>((set, get) => ({
     const oldHandle = (raw as { handle?: string }).handle;
     if (oldHandle && get().profile.handle === DEFAULT_PROFILE.handle && oldHandle !== DEFAULT_PROFILE.handle) void get().saveProfile({ ...get().profile, handle: oldHandle.replace(/^@/, "") });
     set({ issue: i, past: [], future: [], slide: 0, page: 1, view: "issue", sel: null });
-    localStorage.setItem("fixer:last", slug);
+    localStorage.setItem("trafika:last", slug);
     i.assets.forEach((a) => void ensurePreview(a));
     if ((raw as { version?: number }).version !== 2) {
       await be.writeJson(`${slug}/issue.v1-backup.json`, raw);
