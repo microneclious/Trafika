@@ -1,4 +1,4 @@
-// Fixer data model (v2). Everything is typed by the user; nothing is read from photo metadata.
+// Trafika data model (v2). Everything is typed by the user; nothing is read from photo metadata.
 
 export type Fit = "cover" | "contain";
 export interface Crop {

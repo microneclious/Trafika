@@ -29,7 +29,7 @@ export default function App() {
   const [dropping, setDropping] = useState(false);
 
   useEffect(() => {
-    if (!inTauri()) { setError("Fixer needs its desktop shell. Start it from the app menu, or: npm run tauri dev"); return; }
+    if (!inTauri()) { setError("Trafika needs its desktop shell. Start it from the app menu, or: npm run tauri dev"); return; }
     s.init().catch((e) => setError(String(e)));
     let un: (() => void) | undefined;
     getCurrentWebview().onDragDropEvent((e) => {
@@ -87,7 +87,7 @@ export default function App() {
   return (
     <div className={"shell tool-" + s.tool}>
       <header className="topbar">
-        <span className="wordmark">FIXER<b>.</b></span>
+        <span className="wordmark">TRAFIKA<b>.</b></span>
         <nav className="topnav" aria-label="Main">
           {nav.map(([v, l]) => (
             <a key={v} href="#" aria-current={s.view === v || (v === "issue" && s.view !== "collection" && !!issue) ? "page" : undefined}

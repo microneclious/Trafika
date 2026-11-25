@@ -1,4 +1,4 @@
-// Fixer backend: local files under ~/Zines, photo import + hashing, fonts via fontconfig,
+// Trafika backend: local files under ~/Zines, photo import + hashing, fonts via fontconfig,
 // printing via `lp`. No network access anywhere.
 use serde::Serialize;
 use sha2::{Digest, Sha256};
@@ -315,5 +315,5 @@ pub fn run() {
             open_local
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Fixer");
+        .expect("error while running Trafika");
 }

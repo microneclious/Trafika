@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Name=Fixer
+Name=Trafika
 GenericName=Zine + Instagram planner
 Comment=Mock up an Instagram post and a printed zine side by side
-Exec=/home/rat/projects/Zine/fixer/src-tauri/target/release/fixer
-Icon=/home/rat/projects/Zine/fixer/src-tauri/icons/128x128@2x.png
+Exec=@DIR@/src-tauri/target/release/trafika
+Icon=@DIR@/src-tauri/icons/128x128@2x.png
 Terminal=false
 Categories=Graphics;Photography;
-StartupWMClass=fixer
+StartupWMClass=trafika

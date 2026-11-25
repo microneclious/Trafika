@@ -59,9 +59,9 @@ export interface PrintOpts { copies: number; firstSerial: number; total: number;
 export async function exportPrint(issue: Issue, settings: Settings, o: PrintOpts): Promise<string> {
   const imp = impOf(issue);
   const pdf = await PDFDocument.create();
-  pdf.setTitle(`Fixer No. ${pad3(issue.no)}${o.test ? " test print" : ""}`);
-  pdf.setProducer("Fixer");
-  pdf.setCreator("Fixer");
+  pdf.setTitle(`Trafika No. ${pad3(issue.no)}${o.test ? " test print" : ""}`);
+  pdf.setProducer("Trafika");
+  pdf.setCreator("Trafika");
   const scale = PRINT_DPI / 25.4;
   const sides = imp.sides;
   const all = (copy: number) => {
@@ -114,7 +114,7 @@ function hex(c: string): [number, number, number] {
 export async function exportCalibration(paper: Paper): Promise<string> {
   const { w, h } = PAPER[paper];
   const pdf = await PDFDocument.create();
-  pdf.setTitle("Fixer printer calibration"); pdf.setProducer("Fixer");
+  pdf.setTitle("Trafika printer calibration"); pdf.setProducer("Trafika");
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   for (const side of [0, 1]) {
     const W = w * MM_TO_PT, H = h * MM_TO_PT;
@@ -142,13 +142,13 @@ export async function exportCalibration(paper: Paper): Promise<string> {
     const cx = w / 2, cy = h / 2;
     line(cx - 20, cy, cx + 20, cy, 0.25); line(cx, cy - 20, cx, cy + 20, 0.25);
     for (let r = 2; r <= 10; r += 2) line(cx - r, cy - 1, cx - r, cy + 1, 0.15), line(cx + r, cy - 1, cx + r, cy + 1, 0.15), line(cx - 1, cy - r, cx + 1, cy - r, 0.15), line(cx - 1, cy + r, cx + 1, cy + r, 0.15);
-    label(side === 0 ? "SIDE A (front)  —  Fixer printer calibration, " + paper : "SIDE B (back)", 30, 30, 10);
+    label(side === 0 ? "SIDE A (front)  —  Trafika printer calibration, " + paper : "SIDE B (back)", 30, 30, 10);
     if (side === 0) {
       const lines = [
         "1. Print this page with scaling OFF (actual size), both sides.",
         "2. On each edge, find the smallest number whose tick is fully printed: that is the unprintable margin (mm).",
         "3. Hold side A to a window: how far is side B's crosshair from side A's? Ticks are every 2 mm.",
-        "4. Type those numbers into Fixer > Settings > Printer.",
+        "4. Type those numbers into Trafika > Settings > Printer.",
       ];
       lines.forEach((s, i) => label(s, 30, 40 + i * 6, 8));
     }
