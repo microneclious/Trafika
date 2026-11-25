@@ -1,4 +1,4 @@
-import { open } from "@tauri-apps/plugin-dialog";
+import { platform } from "../platform";
 import { useRef, useState } from "react";
 import { cropFor } from "../engine/crop";
 import { slidesOf } from "../engine/layout";
@@ -6,9 +6,8 @@ import { newItem, useStore } from "../store/store";
 import { Surface } from "./Surface";
 
 export async function pickPhotos() {
-  const r = await open({ multiple: true, title: "Add photos", filters: [{ name: "Photos", extensions: ["jpg", "jpeg", "png", "webp"] }] });
-  if (!r) return;
-  await useStore.getState().addPhotos(Array.isArray(r) ? r : [r]);
+  const r = await platform.pick("photos");
+  if (r.length) await useStore.getState().addPhotos(r);
 }
 
 function Thumb({ assetId, w = 30, h = 40 }: { assetId: string; w?: number; h?: number }) {

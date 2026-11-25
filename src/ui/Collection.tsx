@@ -1,11 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { parseCollectionEan, pad3 } from "../engine/codes";
-import { readJson } from "../lib/backend";
+import { platform, readJson } from "../platform";
 import type { Issue } from "../model/types";
 import { useStore } from "../store/store";
 
 export function Collection() {
-  const { collection, openIssue, createIssue } = useStore();
+  const { collection, openIssue, createIssue, backup, restore, notify } = useStore();
+  const [busy, setBusy] = useState(false);
+  const importZip = async () => {
+    const [f] = await platform.pick("zip");
+    if (!f) return;
+    setBusy(true);
+    try { await restore(await platform.readSource(f)); } catch (e) { notify(`Import failed: ${e instanceof Error ? e.message : e}`); } finally { setBusy(false); }
+  };
+  const backupAll = async () => { setBusy(true); try { await backup("collection"); } finally { setBusy(false); } };
   const [q, setQ] = useState("");
   const [sel, setSel] = useState<string | null>(null);
   const [detail, setDetail] = useState<Issue | null>(null);
@@ -35,13 +43,18 @@ export function Collection() {
             <label className="visually-hidden" htmlFor="q">Barcode, issue number or title</label>
             <input id="q" className="input" placeholder="Scan or type a barcode, no. or title" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
           </div>
+          <div className="row coll-actions">
+            <button type="button" className="btn" disabled={busy} onClick={() => void importZip()}>Import backup…</button>
+            <button type="button" className="btn" disabled={busy || !collection.length} onClick={() => void backupAll()}>Back up collection (.zip)</button>
+          </div>
         </div>
         {match.dec?.issue !== undefined && <p className="note-line" style={{ padding: "0 24px 12px" }}>
           Barcode → issue {pad3(match.dec.issue)}{match.dec.copy !== undefined ? `, copy ${match.dec.copy}` : ""} (20{String(match.dec.yy).padStart(2, "0")})</p>}
         <div className="panel-body">
           {collection.length === 0 ? (
             <div className="coll-empty"><h2>No issues yet</h2><p>Each issue is one Instagram post and one printed zine, planned side by side. Start the first one.</p>
-              <div><button type="button" className="btn btn-primary" onClick={() => void createIssue()}>New issue</button></div></div>
+              {platform.kind === "web" && <p>Your photos stay in this browser. Nothing is uploaded, nothing is posted for you, and the app works offline once loaded. Back up to a .zip now and then: browsers can clear their storage.</p>}
+              <div className="row"><button type="button" className="btn btn-primary" onClick={() => void createIssue()}>New issue</button><button type="button" className="btn" disabled={busy} onClick={() => void importZip()}>Import backup…</button></div></div>
           ) : (
             <table className="ledger">
               <thead><tr><th>No.</th><th>Title</th><th>Date</th><th>Format</th><th>Pages</th><th>Copies</th><th>Barcode (copy 01)</th></tr></thead>

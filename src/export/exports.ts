@@ -3,7 +3,7 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { pad3 } from "../engine/codes";
 import { PAPER } from "../engine/geometry";
 import { RATIOS, feedSize, flatten, guideLines, type GuideMode, impOf, type RI, sheetItems, slideItems, slidesOf } from "../engine/layout";
-import { writeBytes, writeJson, writeText } from "../lib/backend";
+import { platform, writeJson } from "../platform";
 import type { Issue, Paper, Settings } from "../model/types";
 import { ensureFonts } from "../render/fonts";
 import { ensureFull, exportImages, releaseFull } from "../render/images";
@@ -45,11 +45,13 @@ export async function exportIG(issue: Issue): Promise<{ files: string[]; copied:
       const [pw, ph] = RATIOS[issue.feedRatio].px;
       const c = renderToCanvas(lists[i], W, H, { scale: pw / W, images: exportImages }, undefined, [pw, ph]);
       const rel = `${issue.slug}/exports/ig/${pad3(issue.no)}_${String(i + 1).padStart(2, "0")}.jpg`;
-      await writeBytes(rel, await canvasBytes(c, "image/jpeg", 0.92));
+      await platform.writeExport(rel, await canvasBytes(c, "image/jpeg", 0.92));
       files.push(rel);
     }
   } finally { releaseFull(); }
-  await writeText(`${issue.slug}/exports/ig/caption.txt`, issue.caption);
+  const cap = `${issue.slug}/exports/ig/caption.txt`;
+  await platform.writeExport(cap, new TextEncoder().encode(issue.caption));
+  files.push(cap);
   const copied = issue.caption ? await copyToClipboard(issue.caption) : false;
   return { files, copied };
 }
@@ -99,7 +101,7 @@ export async function exportPrint(issue: Issue, settings: Settings, o: PrintOpts
   } finally { releaseFull(); }
   const name = o.test ? `${pad3(issue.no)}_${imp.t.code}_test-print.pdf` : `${pad3(issue.no)}_print_${String(o.firstSerial).padStart(2, "0")}-${String(o.firstSerial + o.copies - 1).padStart(2, "0")}.pdf`;
   const rel = `${issue.slug}/exports/print/${name}`;
-  await writeBytes(rel, await pdf.save());
+  await platform.writeExport(rel, await pdf.save());
   return rel;
 }
 
@@ -154,7 +156,7 @@ export async function exportCalibration(paper: Paper): Promise<string> {
     }
   }
   const rel = `calibration/calibration_${paper}.pdf`;
-  await writeBytes(rel, await pdf.save());
+  await platform.writeExport(rel, await pdf.save());
   return rel;
 }
 

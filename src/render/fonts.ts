@@ -8,7 +8,7 @@ import "@fontsource/ibm-plex-mono/600.css";
 import "@fontsource/oswald/400.css";
 import "@fontsource/oswald/500.css";
 import "@fontsource/oswald/700.css";
-import { listImportedFonts, listSystemFonts, readBytes, type FontInfo } from "../lib/backend";
+import { platform, type FontInfo } from "../platform";
 
 export interface FontEntry {
   family: string;
@@ -47,7 +47,7 @@ function weightOf(style: string) {
 /** Register an imported font file with the webview so canvas and UI can use it. */
 export async function registerImported(f: FontInfo) {
   if (loaded.has(f.file)) return;
-  const bytes = await readBytes(f.file);
+  const bytes = await platform.readBytes(f.file);
   const face = new FontFace(f.family, bytes.buffer as ArrayBuffer, {
     weight: weightOf(f.style), style: /italic|oblique/i.test(f.style) ? "italic" : "normal",
   });
@@ -59,7 +59,7 @@ export async function registerImported(f: FontInfo) {
 export async function loadAllFonts(): Promise<FontEntry[]> {
   const out: FontEntry[] = [...BUNDLED];
   try {
-    const imported = await listImportedFonts();
+    const imported = await platform.listImportedFonts();
     const byFam = new Map<string, FontInfo[]>();
     for (const f of imported) {
       await registerImported(f).catch((e) => console.warn("font", f.file, e));
@@ -67,8 +67,8 @@ export async function loadAllFonts(): Promise<FontEntry[]> {
     }
     for (const [family, fs] of byFam) out.push({ family, source: "imported", ...coverage(fs.flatMap((f) => f.langs)), styles: fs.map((f) => f.style) });
   } catch (e) { console.warn(e); }
-  try {
-    const sys = await listSystemFonts();
+  if (platform.caps.systemFonts) try {
+    const sys = await platform.listSystemFonts();
     for (const f of sys) if (!out.some((o) => o.family === f.family)) out.push({ family: f.family, source: "system", ...coverage(f.langs) });
   } catch (e) { console.warn(e); }
   await document.fonts.ready;
