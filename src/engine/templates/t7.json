@@ -1,0 +1,15 @@
+{
+  "id": "accordion", "code": "T7", "name": "Accordion, 8 panels + glue tab",
+  "blurb": "Two strips joined with a glue tab and folded zig-zag. Every neighbouring panel is continuous: made for panoramas and long split pairs.",
+  "binding": "accordion", "orientation": "landscape", "sizes": ["A4", "A3", "Letter"], "trimRatio": null,
+  "sides": 1, "generator": "accordion", "panelsPerRow": 4, "tabMm": 10, "pages": [8],
+  "steps": [
+    { "text": "Print on one side, scaling off.", "show": [] },
+    { "text": "Cut along the red lines: the top and bottom edge, between the strips, and the small scrap at the end of the bottom strip.", "show": ["cut-top", "cut-mid", "cut-bot", "cut-scrap"] },
+    { "text": "Fold every dashed line zig-zag: first one away from you, the next one towards you, alternating.", "show": ["f1", "f2", "f3", "f5", "f6", "f7"] },
+    { "text": "Fold the GLUE tab back along its line.", "show": ["tab"] },
+    { "text": "Put glue or double-sided tape on the tab. Stick it behind panel 5 so the strips become one long strip, 1 to 8.", "show": ["glue"] },
+    { "text": "Fold it closed. Panel 1 is the front, panel 8 the back.", "show": [] }
+  ],
+  "verified": false
+}

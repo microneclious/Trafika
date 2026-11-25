@@ -1,0 +1,200 @@
+{
+ "id": "mini-8-poster",
+ "code": "T2",
+ "name": "8-page mini + poster back",
+ "blurb": "T1 printed on both sides. The back of the sheet is hidden inside the folds; unfold the zine and it's a poster. The centre slit cuts through the poster's middle.",
+ "binding": "codex",
+ "orientation": "landscape",
+ "sizes": [
+  "A4",
+  "A3",
+  "Letter"
+ ],
+ "trimRatio": 1.5,
+ "sides": 2,
+ "grid": {
+  "cols": 4,
+  "rows": 2
+ },
+ "pages": [
+  8
+ ],
+ "panels": [
+  {
+   "page": 5,
+   "side": 0,
+   "col": 0,
+   "row": 0,
+   "rot": 180
+  },
+  {
+   "page": 4,
+   "side": 0,
+   "col": 1,
+   "row": 0,
+   "rot": 180
+  },
+  {
+   "page": 3,
+   "side": 0,
+   "col": 2,
+   "row": 0,
+   "rot": 180
+  },
+  {
+   "page": 2,
+   "side": 0,
+   "col": 3,
+   "row": 0,
+   "rot": 180
+  },
+  {
+   "page": 6,
+   "side": 0,
+   "col": 0,
+   "row": 1,
+   "rot": 0
+  },
+  {
+   "page": 7,
+   "side": 0,
+   "col": 1,
+   "row": 1,
+   "rot": 0
+  },
+  {
+   "page": 8,
+   "side": 0,
+   "col": 2,
+   "row": 1,
+   "rot": 0
+  },
+  {
+   "page": 1,
+   "side": 0,
+   "col": 3,
+   "row": 1,
+   "rot": 0
+  }
+ ],
+ "spreads": [
+  [
+   2,
+   3,
+   "contiguous"
+  ],
+  [
+   4,
+   5,
+   "contiguous"
+  ],
+  [
+   6,
+   7,
+   "contiguous"
+  ],
+  [
+   8,
+   1,
+   "wrap-cover"
+  ]
+ ],
+ "lines": [
+  {
+   "id": "v1",
+   "kind": "fold",
+   "axis": "x",
+   "at": 0.25
+  },
+  {
+   "id": "v2",
+   "kind": "fold",
+   "axis": "x",
+   "at": 0.5
+  },
+  {
+   "id": "v3",
+   "kind": "fold",
+   "axis": "x",
+   "at": 0.75
+  },
+  {
+   "id": "h1",
+   "kind": "fold",
+   "axis": "y",
+   "at": 0.5,
+   "from": 0,
+   "to": 0.25
+  },
+  {
+   "id": "h2",
+   "kind": "fold",
+   "axis": "y",
+   "at": 0.5,
+   "from": 0.75,
+   "to": 1
+  },
+  {
+   "id": "cut",
+   "kind": "cut",
+   "axis": "y",
+   "at": 0.5,
+   "from": 0.25,
+   "to": 0.75
+  }
+ ],
+ "glue": [],
+ "steps": [
+  {
+   "text": "Print both sides, flip on SHORT edge, scaling off. Side 1 = zine pages, side 2 = poster.",
+   "show": []
+  },
+  {
+   "text": "Fold in half the long way (top edge to bottom edge), crease, unfold.",
+   "show": [
+    "h1",
+    "h2",
+    "cut"
+   ]
+  },
+  {
+   "text": "Fold in half the short way, crease, unfold.",
+   "show": [
+    "v2"
+   ]
+  },
+  {
+   "text": "Fold both short ends in to the centre crease, crease, unfold. You now have 8 panels.",
+   "show": [
+    "v1",
+    "v3"
+   ]
+  },
+  {
+   "text": "Fold in half the short way again. Cut along the centre crease from the folded edge to the middle (red line).",
+   "show": [
+    "cut"
+   ]
+  },
+  {
+   "text": "Unfold. Fold in half the long way, push the two ends together so the slit opens into a +.",
+   "show": [
+    "h1",
+    "h2"
+   ]
+  },
+  {
+   "text": "Flatten into a booklet with the front cover on top.",
+   "show": []
+  },
+  {
+   "text": "Unfold the whole sheet any time to see the poster. The slit runs through its middle.",
+   "show": [
+    "cut"
+   ]
+  }
+ ],
+ "verified": false,
+ "duplex": "short",
+ "poster": true
+}

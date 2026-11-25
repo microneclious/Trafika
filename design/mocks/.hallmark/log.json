@@ -1,0 +1,33 @@
+[
+ {
+  "shape": "app screen",
+  "theme": "custom",
+  "scope": "app",
+  "axes": "dark/grotesk-sans/chromatic-red",
+  "hero": "linked split: carousel slide and its sheet panel lit together",
+  "nav": "top bar",
+  "footer": "status line",
+  "imagery": "stand-in film photos",
+  "photos": [
+   "wikimedia stand-ins x9"
+  ],
+  "entry": "split view",
+  "fingerprint": "darkroom console + paper sheet",
+  "sections": [
+   "split view",
+   "cover editor",
+   "collection ledger"
+  ],
+  "signature": "the linked split",
+  "waived": [
+   "7b",
+   "75",
+   "2b",
+   "71",
+   "39b"
+  ],
+  "prompt": "Fixer M0 mocks",
+  "date": "2026-11-23",
+  "mode": "build"
+ }
+]

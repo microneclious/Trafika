@@ -1,0 +1,19 @@
+{
+  "id": "trifold", "code": "T8", "name": "Tri-fold pamphlet",
+  "blurb": "One sheet, both sides, two folds. Six tall panels: a quick one-photo-and-story issue.",
+  "binding": "trifold", "orientation": "landscape", "sizes": ["A4", "Letter"], "trimRatio": null,
+  "sides": 2, "duplex": "short", "grid": { "cols": 3, "rows": 1 }, "pages": [6],
+  "panels": [
+    { "page": 2, "side": 0, "col": 0, "row": 0, "rot": 0 }, { "page": 6, "side": 0, "col": 1, "row": 0, "rot": 0 }, { "page": 1, "side": 0, "col": 2, "row": 0, "rot": 0 },
+    { "page": 3, "side": 1, "col": 0, "row": 0, "rot": 0 }, { "page": 4, "side": 1, "col": 1, "row": 0, "rot": 0 }, { "page": 5, "side": 1, "col": 2, "row": 0, "rot": 0 }
+  ],
+  "spreads": [[3, 4, "contiguous"], [4, 5, "contiguous"], [6, 1, "wrap-cover"]],
+  "lines": [{ "id": "f1", "kind": "fold", "axis": "x", "at": 0.3333333 }, { "id": "f2", "kind": "fold", "axis": "x", "at": 0.6666667 }],
+  "glue": [],
+  "steps": [
+    { "text": "Print both sides, flip on SHORT edge, scaling off.", "show": [] },
+    { "text": "Lay it inside up (pages 3, 4, 5). Fold the right third in over the middle.", "show": ["f2"] },
+    { "text": "Fold the left third over the top. Page 1 is now the front, page 6 the back.", "show": ["f1"] }
+  ],
+  "verified": false
+}
