@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 330" width="2000" height="660" font-family="IBM Plex Mono, ui-monospace, monospace">
+  <rect width="1000" height="330" rx="8" fill="#0B140E"/>
+  <defs>
+    <pattern id="h" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="5" height="5" fill="#D9D4C8"/><line x1="0" y1="0" x2="0" y2="5" stroke="#E5391F" stroke-width="1.4"/>
+    </pattern>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C9D1CB"/></marker>
+  </defs>
+
+  <!-- 1. A4 sheet, trim strips hatched (scale 1 mm = 0.9 units) -->
+  <g transform="translate(24 54)">
+    <text x="0" y="-22" font-size="13" fill="#F4F1EA">1  A4 sheet</text>
+    <text x="0" y="-6" font-size="10" fill="#9AA39D">297 × 210 mm</text>
+    <rect width="267.3" height="189" fill="#F4F1EA"/>
+    <rect width="267.3" height="5.4" fill="url(#h)"/>
+    <rect y="183.6" width="267.3" height="5.4" fill="url(#h)"/>
+    <text x="0" y="214" font-size="10" fill="#9AA39D">trim 6 mm off the top and bottom</text>
+  </g>
+  <line x1="304" y1="148" x2="336" y2="148" stroke="#C9D1CB" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- 2. trimmed sheet: 297 × 198 = 3:2, eight 3:4 pages -->
+  <g transform="translate(350 59.4)">
+    <text x="0" y="-27.4" font-size="13" fill="#F4F1EA">2  Trimmed sheet, 3:2</text>
+    <text x="0" y="-11.4" font-size="10" fill="#9AA39D">297 × 198 mm, folded into 8 pages</text>
+    <rect width="267.3" height="178.2" fill="#F4F1EA"/>
+    <g stroke="#1B1F1C" stroke-width="0.8" stroke-dasharray="4 3">
+      <line x1="66.8" y1="0" x2="66.8" y2="178.2"/><line x1="133.65" y1="0" x2="133.65" y2="178.2"/><line x1="200.5" y1="0" x2="200.5" y2="178.2"/>
+      <line x1="0" y1="89.1" x2="267.3" y2="89.1"/>
+    </g>
+    <rect x="200.5" y="89.1" width="66.8" height="89.1" fill="none" stroke="#E5391F" stroke-width="2.5"/>
+    <text x="0" y="203.6" font-size="10" fill="#9AA39D">one page: 74.25 × 99 mm = <tspan fill="#FF4128">3:4</tspan></text>
+    <text x="0" y="218.6" font-size="10" fill="#9AA39D">= one Instagram slide (1080 × 1440)</text>
+  </g>
+  <line x1="630" y1="148" x2="662" y2="148" stroke="#C9D1CB" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- 3. open spread: two pages = 3:2 -->
+  <g transform="translate(676 81)">
+    <text x="0" y="-49" font-size="13" fill="#F4F1EA">3  Open spread, 3:2</text>
+    <text x="0" y="-33" font-size="10" fill="#9AA39D">148.5 × 99 mm</text>
+    <rect width="300" height="200" fill="#F4F1EA"/>
+    <rect x="10" y="10" width="135" height="180" fill="#2A3A30"/>
+    <rect x="155" y="10" width="135" height="180" fill="#2A3A30"/>
+    <path d="M10 140 L70 80 L110 120 L145 95 L145 190 L10 190Z M155 105 L200 70 L245 125 L290 90 L290 190 L155 190Z" fill="#41584A"/>
+    <line x1="150" y1="0" x2="150" y2="200" stroke="#1B1F1C" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <text x="0" y="225" font-size="10" fill="#9AA39D">= a 2-slide carousel = a 35 mm camera frame</text>
+  </g>
+</svg>
