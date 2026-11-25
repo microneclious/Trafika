@@ -1,0 +1,15 @@
+{
+  "name": "Trafika",
+  "short_name": "Trafika",
+  "description": "Mock up an Instagram post and a printed, numbered zine from the same photos. Works offline; nothing leaves your device.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#000B04",
+  "theme_color": "#000B04",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
