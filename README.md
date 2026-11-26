@@ -57,45 +57,26 @@ Red lines are cuts, dashed lines are folds, the grey strips are trimmed off. Num
 - **Nothing is posted for you.** No Instagram or Meta connection, no accounts. You export the slides and post them yourself.
 - **Back up.** Browsers can clear their storage, so the web app reminds you to export a `.zip` backup. The same `.zip` opens in the Linux app and the web app.
 
-## Linux app or web app?
+## Get it
 
-| | Linux app (AppImage) | Web app |
-|---|---|---|
-| Install | Download, `chmod +x`, run | Nothing, open the link |
-| Your files | `~/Zines`, plain folders | Browser storage, `.zip` backups |
-| Fonts | Your installed fonts + any you add | Bundled + any you add |
-| Printing | Straight to your printer (duplex aware) | Download the PDF, print at 100 % |
+- **Web:** just open **[microneclious.github.io/Trafika](https://microneclious.github.io/Trafika/)**. Works in any modern browser, nothing to install, and it keeps working offline.
+- **Linux:** download `Trafika_*.AppImage` from **[Releases](https://github.com/microneclious/Trafika/releases/latest)**, then:
 
-The AppImage runs on Fedora, Manjaro/Arch, Ubuntu, Debian and most other distros. If it doesn't start, install FUSE 2 (`sudo dnf install fuse fuse-libs` on Fedora, `sudo pacman -S fuse2` on Manjaro). If the window stays blank on NVIDIA or some Wayland setups, start it with `WEBKIT_DISABLE_DMABUF_RENDERER=1`.
+  ```sh
+  chmod +x Trafika_*.AppImage && ./Trafika_*.AppImage
+  ```
+
+  One file, runs on Fedora, Manjaro/Arch, Ubuntu, Debian and most other distros.
+  Won't start? Install FUSE 2 (`sudo dnf install fuse-libs` / `sudo pacman -S fuse2` / `sudo apt install libfuse2`).
+  Blank window? Run it with `WEBKIT_DISABLE_DMABUF_RENDERER=1`.
 
 ## Run it from source
 
-You need Node.js 20+ (24 recommended).
-
 ```sh
 npm ci
-npm run dev        # web app at http://localhost:1420
-npm test           # engine, zip, hashing and template tests
-npm run build      # web build in dist/, then: npm run check:offline
+npm run dev                                  # web app at http://localhost:1420
+npm run tauri build -- --bundles appimage    # Linux app (needs Rust + WebKitGTK 4.1 dev libs)
 ```
-
-For the Linux app you also need Rust ([rustup](https://rustup.rs)) and the WebKitGTK libraries:
-
-```sh
-# Fedora
-sudo dnf install webkit2gtk4.1-devel openssl-devel curl wget file libappindicator-gtk3-devel librsvg2-devel
-sudo dnf group install c-development
-# Manjaro / Arch
-sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl libappindicator-gtk3 librsvg
-# Ubuntu / Debian
-sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libayatana-appindicator3-dev librsvg2-dev
-
-npm run tauri dev                            # run the Linux app
-npm run tauri build -- --bundles appimage    # build the AppImage
-./scripts/install-desktop.sh                 # add a source build to your app menu
-```
-
-Pushing a tag like `v1.0.1` builds the AppImage on GitHub and attaches it to a release.
 
 ### Project structure
 
